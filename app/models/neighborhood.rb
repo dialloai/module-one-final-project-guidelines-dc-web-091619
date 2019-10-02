@@ -1,3 +1,5 @@
+require_relative '../../config/environment'
+
 class Neighborhood < ActiveRecord::Base
   has_many :parkings
 
@@ -28,12 +30,19 @@ class Neighborhood < ActiveRecord::Base
       return 
   end
 
-  available_parking = location.parkings.select do |parking_space|
-    parking_space.vacancy == true
-  end
-  puts "There are #{available_parking.length} space(s) available"
+    available_parking = location.parkings.select do |parking_space|
+      parking_space.vacancy == true
+    end  
+
+    # self.show_parking(available_parking)
  end
+
+#  def self.show_parking(available_parking)
+#   available_parking.
+#  end
+
 end
+
 
 #iterate thru location.parkings vacancy == true 
 #
