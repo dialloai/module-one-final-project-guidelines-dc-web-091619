@@ -15,7 +15,13 @@ class Neighborhood < ActiveRecord::Base
   location = nil
   if user_selection.to_i == 1
 
-    location = Neighborhood.find_by(location: "North Dupont")
+      location = Neighborhood.find_by(location: "North Dupont")
+    elsif user_selection.to_i == 2
+      location = Neighborhood.find_by(location: "South Dupont")
+    elsif user_selection.to_i == 3
+      location = Neighborhood.find_by(location: "G Street")
+    else
+      puts "Sorry, that selection isn't valid, please try again"
   end
   available_parking = location.parkings.select do |parking_space|
     parking_space.vacancy == true
