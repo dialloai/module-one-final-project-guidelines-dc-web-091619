@@ -21,8 +21,13 @@ class Neighborhood < ActiveRecord::Base
     elsif user_selection.to_i == 3
       location = Neighborhood.find_by(location: "G Street")
     else
-      puts "Sorry, that selection isn't valid, please try again"
+      puts "Sorry, that selection isn't valid, please try again" 
+      self.neighborhood_options
+     user_selection =  gets.chomp
+      self.neighborhood_selection(user_selection)
+      return 
   end
+
   available_parking = location.parkings.select do |parking_space|
     parking_space.vacancy == true
   end
