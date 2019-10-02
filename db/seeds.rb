@@ -13,11 +13,20 @@ Parking.destroy_all
 tom = Customer.find_or_create_by(name: "Tom Adams", username: "TomAdams110024")
 
 
+
 #neighborhoods
 north_dupont = Neighborhood.find_or_create_by(location: "North Dupont")
+south_dupont = Neighborhood.find_or_create_by(location: "South Dupont")
+g_street = Neighborhood.find_or_create_by(location: "G Street")
 
 # #parkings
 space_1a = Parking.find_or_create_by(parking_space: "1A", vacancy: true, cost: 20, neighborhood_id: north_dupont.id)
+space_2a = Parking.find_or_create_by(parking_space: "2A", vacancy: false)
+space_3a = Parking.find_or_create_by(parking_space: "3A", vacancy: true)
+
+space_1b = Parking.find_or_create_by(parking_space: "1B", vacancy: true, cost: 22, neighborhood_id: south_dupont.id)
+
+space_1c = Parking.find_or_create_by(parking_space: "1C", vacancy: true, cost: 17, neighborhood_id: g_street.id)
 
 # #reservations
 tom_1a = Reservation.find_or_create_by(customer_id: tom.id, parking_id: space_1a.id)

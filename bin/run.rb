@@ -9,5 +9,7 @@ user_input_username = cli.get_username
 
 new_customer = Customer.create(name: user_input_name, username: user_input_username)
 
+Neighborhood.neighborhood_options
+user_selection = gets.chomp
 
-# puts "HELLO WORLD"
+Neighborhood.neighborhood_selection(user_selection)
