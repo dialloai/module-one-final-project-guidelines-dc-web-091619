@@ -22,13 +22,15 @@ ActiveRecord::Schema.define(version: 4) do
   end
 
   create_table "parkings", force: :cascade do |t|
-    t.string "address"
+    t.string "parking_space"
     t.boolean "vacancy"
     t.integer "cost"
+    t.integer "neighborhood_id"
   end
 
   create_table "reservations", force: :cascade do |t|
-    t.boolean "confirmation"
+    t.integer "customer_id"
+    t.integer "parking_id"
   end
 
 end

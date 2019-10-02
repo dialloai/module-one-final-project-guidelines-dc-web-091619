@@ -1,3 +1,3 @@
 class Neighborhood < ActiveRecord::Base
-  has_many :parking
+  has_many :parkings
 end
