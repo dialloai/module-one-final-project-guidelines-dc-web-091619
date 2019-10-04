@@ -1,4 +1,5 @@
 require_relative '../../config/environment'
+
 # require 'tty-prompt'
 
 
@@ -6,21 +7,23 @@ class Cli
   attr_accessor :parking_space
   attr_reader :new_customer
     def greeting
-        puts "Hi! Welcome to Auto-Park DC!"
+        puts "Hi! Welcome to Auto-Park DC!\n* * * * * * * * * * * * *\n\n"
+
+        
         self.get_user
     end
 
     def get_user
-        puts "Please enter your name."
+        puts "Please enter your name.\n"
        user = gets.chomp
-        puts "Please create your username."
+        puts "Please create your username.\n"
        username = gets.chomp
       @new_customer = Customer.create(name: user, username: username)
 
     end
     
     def neighborhood_options
-    puts "Please select the number of the location you'd like to park"
+    puts "Please select the number of the location you'd like to park\n\n"
         Neighborhood.all.each_with_index do |neighborhood,index|
         puts "#{index + 1}. #{neighborhood.location}"
       end
@@ -63,11 +66,16 @@ class Cli
       available_parking.each_with_index do |parking,index|
     #  index + 1
       puts "#{index + 1}. #{parking.parking_space}"
-
     end
-    puts "Please enter the parking space code."
-    user_selection = self.get_parking_input(available_parking)
-    self.choose_parking(user_selection)
+    if available_parking.length > 0 
+        puts "Please enter the parking space code."
+        user_selection = self.get_parking_input(available_parking)
+        self.choose_parking(user_selection)
+       else 
+        puts "Sorry! This parking lot is full, please select another location\n\n"
+        
+      neighborhood_options
+    end
   end
 
   def get_parking_input(available_parking)
@@ -101,7 +109,8 @@ class Cli
     if reservation_input == "YES"
       puts "Confirmed! \nYou have booked #{@parking_space.parking_space} in #{@parking_space.neighborhood.location}"
       new_reservation = Reservation.create(customer_id: @new_customer.id, parking_id: @parking_space.id)
-
+      
+      @parking_space.update(vacancy: false) 
     elsif reservation_input == "NO"
       #go back to main menu
       self.neighborhood_options
@@ -111,7 +120,7 @@ class Cli
       # reservation_prompt(user_selection)
 
     else 
-      puts "This selection is not valid, please try again."
+      puts "This selection is not valid, please try again.\n"
       user_selection = reservation_prompt
       confirm_reservation(user_selection)
     end
