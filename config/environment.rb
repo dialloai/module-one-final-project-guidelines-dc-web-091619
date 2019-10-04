@@ -1,4 +1,5 @@
 require 'bundler'
+require 'rainbow'
 Bundler.require
 
 ActiveRecord::Base.establish_connection(

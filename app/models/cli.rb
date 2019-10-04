@@ -1,4 +1,5 @@
 require_relative '../../config/environment'
+
 # require 'tty-prompt'
 
 
@@ -6,21 +7,28 @@ class Cli
   attr_accessor :parking_space
   attr_reader :new_customer
     def greeting
-        puts "Hi! Welcome to Auto-Park DC!"
-        self.get_user
-    end
+      puts  Rainbow("  ______
+ /|_||_\\`.__
+(   _    _ _\\
+=`-(_)--(_)-'\n ").cyan
+      puts Rainbow("Hi! Welcome to Auto-Park DC!\n* * * * * * * * * * * * *\n\n").aqua.bright.underline
 
+          self.get_user
+    end
     def get_user
-        puts "Please enter your name."
+        puts Rainbow("Please enter your name.\n").blue.bright
        user = gets.chomp
-        puts "Please create your username."
+        puts Rainbow("Please create your username.\n").blue.bright
        username = gets.chomp
+       
       @new_customer = Customer.create(name: user, username: username)
+     
 
     end
     
     def neighborhood_options
-    puts "Please select the number of the location you'd like to park"
+       puts Rainbow("Welcome, #{@new_customer.name}!\n").blue.bright
+    puts Rainbow("Please select the number of the location you'd like to park\n").blue.bright
         Neighborhood.all.each_with_index do |neighborhood,index|
         puts "#{index + 1}. #{neighborhood.location}"
       end
@@ -37,7 +45,7 @@ class Cli
         elsif user_selection.to_i == 3
           location = Neighborhood.find_by(location: "G Street")
         else
-        puts "Sorry, that selection isn't valid, please try again" 
+        puts Rainbow("Sorry, that selection isn't valid, please try again").red.bright
         self.neighborhood_options
           user_selection = gets.chomp
         self.neighborhood_selection(user_selection)
@@ -59,15 +67,19 @@ class Cli
     # end
 
   def show_parking(available_parking)
-      puts "There are #{available_parking.length} space(s) available"
+      puts Rainbow("There are #{available_parking.length} space(s) available").blue.bright
       available_parking.each_with_index do |parking,index|
     #  index + 1
       puts "#{index + 1}. #{parking.parking_space}"
-
     end
-    puts "Please enter the parking space code."
-    user_selection = self.get_parking_input(available_parking)
-    self.choose_parking(user_selection)
+    if available_parking.length > 0 
+        puts Rainbow("Please enter the parking space code.").blue.bright
+        user_selection = self.get_parking_input(available_parking)
+        self.choose_parking(user_selection)
+       else 
+        puts Rainbow("Sorry! This parking lot is full, please select another location\n\n").red.bright
+        self.neighborhood_options
+    end
   end
 
   def get_parking_input(available_parking)
@@ -92,16 +104,26 @@ class Cli
   
 
   def reservation_prompt
-    puts "Would you like to reserve this space?\n Select YES / NO"
+    puts Rainbow("Would you like to reserve this space?\nSelect YES / NO").blue.bright
     gets.chomp.upcase
   end
-  
+  def exit_prompt
+    puts Rainbow("Thank you for using the Auto-Park DC app!\n\n").yellow.bright
+    puts Rainbow("    ____
+ __/  |_\\_
+|  _     _``-.
+'-(_)---(_)--'   ").yellow.bright
+
+    return exit
+  end
   
   def confirm_reservation(reservation_input)
     if reservation_input == "YES"
-      puts "Confirmed! \nYou have booked #{@parking_space.parking_space} in #{@parking_space.neighborhood.location}"
+      puts Rainbow("Confirmed! \nThank you, #{@new_customer.name}. You have reserved #{@parking_space.parking_space} in #{@parking_space.neighborhood.location}.\n").green.bright.underline
       new_reservation = Reservation.create(customer_id: @new_customer.id, parking_id: @parking_space.id)
-
+      
+      @parking_space.update(vacancy: false)
+       self.exit_prompt
     elsif reservation_input == "NO"
       #go back to main menu
       self.neighborhood_options
@@ -111,7 +133,7 @@ class Cli
       # reservation_prompt(user_selection)
 
     else 
-      puts "This selection is not valid, please try again."
+      puts Rainbow("This selection is not valid, please try again.\n").red.bright
       user_selection = reservation_prompt
       confirm_reservation(user_selection)
     end
