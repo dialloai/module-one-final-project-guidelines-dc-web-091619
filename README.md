@@ -1,7 +1,7 @@
 # Auto-Park DC Module 1 Project Description
 
-# Project Description Creators and Contributors
-Aicha Diallo and Antonio Abraham
+# Project Creators and Contributors
+Aicha Diallo and Antonio Abraham.
 
 
 # Project Description

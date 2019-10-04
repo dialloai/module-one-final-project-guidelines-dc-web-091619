@@ -104,7 +104,7 @@ class Cli
   
 
   def reservation_prompt
-    puts Rainbow("Would you like to reserve this space?\nSelect YES / NO").blue.bright
+    puts Rainbow("Would you like to reserve this space for $#{@parking_space.cost}?\nSelect YES / NO").blue.bright
     gets.chomp.upcase
   end
   def exit_prompt
