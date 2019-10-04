@@ -22,11 +22,12 @@ class Cli
        username = gets.chomp
        
       @new_customer = Customer.create(name: user, username: username)
-      puts "Welcome, #{@new_customer.name}!\n\n"
+     
 
     end
     
     def neighborhood_options
+       puts Rainbow("Welcome, #{@new_customer.name}!\n").blue.bright
     puts Rainbow("Please select the number of the location you'd like to park\n").blue.bright
         Neighborhood.all.each_with_index do |neighborhood,index|
         puts "#{index + 1}. #{neighborhood.location}"
@@ -103,17 +104,22 @@ class Cli
   
 
   def reservation_prompt
-    puts Rainbow("Would you like to reserve this space?\n Select YES / NO").blue.bright
+    puts Rainbow("Would you like to reserve this space?\nSelect YES / NO").blue.bright
     gets.chomp.upcase
   end
   def exit_prompt
     puts Rainbow("Thank you for using the Auto-Park DC app!\n\n").yellow.bright
+    puts Rainbow("    ____
+ __/  |_\\_
+|  _     _``-.
+'-(_)---(_)--'   ").yellow.bright
+
     return exit
   end
   
   def confirm_reservation(reservation_input)
     if reservation_input == "YES"
-      puts Rainbow("Confirmed! \nThank you, #{@new_customer.name}. You have reserved #{@parking_space.parking_space} in #{@parking_space.neighborhood.location}\n").green.bright.underline
+      puts Rainbow("Confirmed! \nThank you, #{@new_customer.name}. You have reserved #{@parking_space.parking_space} in #{@parking_space.neighborhood.location}.\n").green.bright.underline
       new_reservation = Reservation.create(customer_id: @new_customer.id, parking_id: @parking_space.id)
       
       @parking_space.update(vacancy: false)
